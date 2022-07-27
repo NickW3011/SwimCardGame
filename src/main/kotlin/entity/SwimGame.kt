@@ -11,9 +11,9 @@ package entity
  * @param players the 2-4 players currently playing the game
  */
 data class SwimGame(
-    var passedCounter: Int,
-    var currentPlayer: Int,
-    var cardsInMid: Array<Card>,
-    var deck: List<Card>,
+    val passedCounter: Int = 0,
+    val currentPlayer: Int = 1,
+    val cardsInMid: Array<Card>,
+    val deck: List<Card>,
     val players: Array<Player>
 )

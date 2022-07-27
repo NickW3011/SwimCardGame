@@ -10,6 +10,6 @@ package entity
  */
 data class Player(
     val name: String,
-    var closed: Boolean = false,
-    var cardsOnHand: Array<Card>
+    val closed: Boolean = false,
+    val cardsOnHand: Array<Card>
 )
