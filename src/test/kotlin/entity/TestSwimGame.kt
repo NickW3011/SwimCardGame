@@ -44,7 +44,7 @@ class TestSwimGame {
     }
 
     /**
-     * Helping funcction to get a list with every possible [Card] in the game.
+     * Helping fucction to get a list with every possible [Card] in the game.
      */
     fun fillCardList(cards: MutableList<Card>) {
         enumValues<CardValue>().forEach { value ->
@@ -57,7 +57,7 @@ class TestSwimGame {
     }
 
     /**
-     * Helping funcction to fill the cardsInMid, deck, cardsOnHand1 and cardsOnHand2
+     * Helping function to fill the cardsInMid, deck, cardsOnHand1 and cardsOnHand2
      */
     fun fillCards(
         cardsInMid: Array<Card>, deck: MutableList<Card>,
