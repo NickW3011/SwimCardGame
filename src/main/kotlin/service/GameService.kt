@@ -6,7 +6,7 @@ import kotlin.random.Random
 
 class GameService(
     private val rootService: RootService
-) {
+) : AbstractRefreshingService() {
 
     // Function startNewGame
 
@@ -27,6 +27,8 @@ class GameService(
         val deck = randomizeCards(availableCards).toList()
 
         rootService.currentGame = SwimGame(passedCounter, currentPlayer, cardsInMid, deck, swimPlayers)
+
+        //refreshAfterStartNewGame()
     }
 
     /**
@@ -59,9 +61,11 @@ class GameService(
      * Helping function to create the new [Player] objects. For each [Player], 3 random [Card] objects are generated
      * and put in their hand
      */
-    private fun createPlayers(playerCount: Int,
-                              availableCards: MutableList<Card>,
-                              names: Array<String>): Array<Player> {
+    private fun createPlayers(
+        playerCount: Int,
+        availableCards: MutableList<Card>,
+        names: Array<String>
+    ): Array<Player> {
         val players = arrayOfNulls<Player>(playerCount)
         for (i in 0..playerCount) {
             val cardsOnHand = getRandomThreeCards(availableCards)
@@ -128,5 +132,16 @@ class GameService(
         } else {
             Integer.parseInt(cardValue.toString()).toDouble()
         }
+    }
+
+    // Function isGameOver
+
+    /**
+     * Function for checking if the current game has finished. A game is over if every player has passed or if the
+     * current player has already closed the game
+     */
+    fun isGameOver(): Boolean {
+        return requireNotNull(rootService.currentGame).passedCounter == requireNotNull(rootService.currentGame).players.size
+                || requireNotNull(rootService.currentGame).players[requireNotNull(rootService.currentGame).currentPlayer].closed
     }
 }
