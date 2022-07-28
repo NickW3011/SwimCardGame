@@ -4,6 +4,13 @@ import entity.*
 import kotlin.math.max
 import kotlin.random.Random
 
+/**
+ * This is a service class which holds several functions for game actions as well as helping functions. It holds the
+ * game actions startNewGame, countPoints and isGameOver and also several helping functions. It implements the
+ * [AbstractRefreshingService]
+ *
+ * @param rootService access to the [RootService] which holds the current game
+ */
 class GameService(
     private val rootService: RootService
 ) : AbstractRefreshingService() {
@@ -15,6 +22,9 @@ class GameService(
      * the players are created using helping functions. The passedCounter starts at 0 and the currentPlayer at 1. After
      * creating the players with their starting carsOnHand and setting the cardsInMid, the unused cards are put in a
      * random order in the deck
+     *
+     * @param playerCount number of players
+     * @param players [Array] with names of players
      */
     fun startNewGame(playerCount: Int, players: Array<String>) {
         val availableCards = mutableListOf<Card>()
@@ -33,6 +43,8 @@ class GameService(
 
     /**
      * Helping function to get a list with every possible [Card] in the game
+     *
+     * @param cards [MutableList] to be filled with all possible cards
      */
     private fun fillCardList(cards: MutableList<Card>) {
         enumValues<CardValue>().forEach { value ->
@@ -46,6 +58,9 @@ class GameService(
 
     /**
      * Helping function to get 3 [Card] objects in a random order
+     *
+     * @param availableCards cards to get three random cards from
+     * @return [Array] of the randomly chosen cards
      */
     private fun getRandomThreeCards(availableCards: MutableList<Card>): Array<Card> {
         val cards = arrayOfNulls<Card>(3)
@@ -60,6 +75,11 @@ class GameService(
     /**
      * Helping function to create the new [Player] objects. For each [Player], 3 random [Card] objects are generated
      * and put in their hand
+     *
+     * @param playerCount number of players to create
+     * @param availableCards cards to generate the starting hand for the players from
+     * @param names names of the players
+     * @return [Array] of [Player] objects with randomly set cardsOnHand
      */
     private fun createPlayers(
         playerCount: Int,
@@ -77,6 +97,9 @@ class GameService(
 
     /**
      * Helping function to randomize the order of [Card] objects
+     *
+     * @param availableCards [MutableList] of cards to randomize
+     * @return [MutableList] of randomized cards
      */
     private fun randomizeCards(availableCards: MutableList<Card>): MutableList<Card> {
         val randomizedCards = mutableListOf<Card>()
@@ -93,6 +116,9 @@ class GameService(
     /**
      * Function to count the current points of a [Player] by the rules of the Swim Game. If a [Player] has 3 cards with
      * the same value, the [Player] gets 30.5 points, if that is not the case, the highest sum of one suit is returned
+     *
+     * @param player [Player] to count the points from
+     * @return player points as [Double]
      */
     fun countPoints(player: Player): Double {
         val cards = player.cardsOnHand
@@ -109,6 +135,10 @@ class GameService(
 
     /**
      * Helping function to count the points of one [CardSuit]
+     *
+     * @param suit [CardSuit] to count points from
+     * @param cards [Array] of cards to count points from
+     * @return points of suit as [Double]
      */
     private fun countPointsOfSuit(suit: CardSuit, cards: Array<Card>): Double {
         var points = 0.0
@@ -123,6 +153,9 @@ class GameService(
     /**
      * Helping function to convert a [CardValue] to a [Double]. ACE is converted to 11 points and QUEEN, KING and JACK
      * are converted to 10 points. The other values are converted to the number they represent
+     *
+     * @param cardValue [CardValue] to convert to [Double]
+     * @return value of [CardValue] as [Double]
      */
     private fun cardValueToDouble(cardValue: CardValue): Double {
         return if (cardValue == CardValue.ACE) {
@@ -139,6 +172,8 @@ class GameService(
     /**
      * Function for checking if the current game has finished. A game is over if every player has passed or if the
      * current player has already closed the game
+     *
+     * @return [Boolean] weather the current [SwimGame] is over
      */
     fun isGameOver(): Boolean {
         return requireNotNull(rootService.currentGame).passedCounter == requireNotNull(rootService.currentGame).players.size
