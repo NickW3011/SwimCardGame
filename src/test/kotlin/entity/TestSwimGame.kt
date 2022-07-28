@@ -16,10 +16,10 @@ class TestSwimGame {
     fun createSwimGame() {
         val passedCounter = 0
         val currentPlayer = 1
-        val cardsInMid = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
+        val cardsInMid = Array(3) { Card(CardValue.TEN, CardSuit.SPADES) }
         val mutableDeck = mutableListOf<Card>()
-        val cardsOnHand1 = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
-        val cardsOnHand2 = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
+        val cardsOnHand1 = Array(3) { Card(CardValue.TEN, CardSuit.SPADES) }
+        val cardsOnHand2 = Array(3) { Card(CardValue.TEN, CardSuit.SPADES) }
 
         fillCards(cardsInMid, mutableDeck, cardsOnHand1, cardsOnHand2)
         val deck = mutableDeck.toList()
@@ -46,7 +46,7 @@ class TestSwimGame {
     /**
      * Helping fucction to get a list with every possible [Card] in the game.
      */
-    fun fillCardList(cards: MutableList<Card>) {
+    private fun fillCardList(cards: MutableList<Card>) {
         enumValues<CardValue>().forEach { value ->
             val cardValue: CardValue = value
             enumValues<CardSuit>().forEach {
@@ -59,7 +59,7 @@ class TestSwimGame {
     /**
      * Helping function to fill the cardsInMid, deck, cardsOnHand1 and cardsOnHand2
      */
-    fun fillCards(
+    private fun fillCards(
         cardsInMid: Array<Card>, deck: MutableList<Card>,
         cardsOnHand1: Array<Card>, cardsOnHand2: Array<Card>
     ) {
