@@ -35,8 +35,8 @@ class PlayerActionService(
      */
     private fun endMove(player: Player) {
         val currentGame = requireNotNull(rootService.currentGame)
-        if (currentGame.currentPlayer == currentGame.players.size) {
-            rootService.currentGame = currentGame.copy(currentPlayer = 1)
+        if (currentGame.currentPlayer == currentGame.players.size - 1) {
+            rootService.currentGame = currentGame.copy(currentPlayer = 0)
         } else {
             rootService.currentGame = currentGame.copy(currentPlayer = currentGame.currentPlayer + 1)
         }
@@ -116,20 +116,24 @@ class PlayerActionService(
 
         if (newPassedCounter == currentGame.players.size) {
             if (currentGame.deck.size < 3) {
+                rootService.currentGame = currentGame.copy(passedCounter = newPassedCounter)
+                endMove(player)
                 onAllRefreshables { refreshAfterGameEnd() }
                 return
             }
             val newCardsInMid = currentGame.deck.subList(0, 2)
+            val newDeck = currentGame.deck.subList(3, currentGame.deck.size - 1)
             rootService.currentGame = currentGame.copy(
                 passedCounter = newPassedCounter,
-                cardsInMid = newCardsInMid.toTypedArray()
+                cardsInMid = newCardsInMid.toTypedArray(),
+                deck = newDeck
             )
 
             onAllRefreshables { refreshAfterTableDeckChange() }
             newPassedCounter = 0
         }
 
-        rootService.currentGame = currentGame.copy(passedCounter = newPassedCounter)
+        rootService.currentGame = requireNotNull(rootService.currentGame).copy(passedCounter = newPassedCounter)
 
         onAllRefreshables { refreshAfterPass() }
         endMove(player)

@@ -27,6 +27,7 @@ class GameService(
      * @param players [Array] with names of players
      */
     fun startNewGame(playerCount: Int, players: Array<String>) {
+        //TODO: check if player names are unique
         val availableCards = mutableListOf<Card>()
         fillCardList(availableCards)
 

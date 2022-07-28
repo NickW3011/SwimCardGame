@@ -79,11 +79,11 @@ private val CardSuit.row get() = when (this) {
  */
 private val CardValue.column get() = when (this) {
     CardValue.ACE -> 0
-    CardValue.TWO -> 1
-    CardValue.THREE -> 2
-    CardValue.FOUR -> 3
-    CardValue.FIVE -> 4
-    CardValue.SIX -> 5
+    //CardValue.TWO -> 1
+    //CardValue.THREE -> 2
+    //CardValue.FOUR -> 3
+    //CardValue.FIVE -> 4
+    //CardValue.SIX -> 5
     CardValue.SEVEN -> 6
     CardValue.EIGHT -> 7
     CardValue.NINE -> 8

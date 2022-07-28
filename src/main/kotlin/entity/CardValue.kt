@@ -11,11 +11,11 @@ import java.util.*
  *
  */
 enum class CardValue {
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
+    //TWO,
+    //THREE,
+    //FOUR,
+    //FIVE,
+    //SIX,
     SEVEN,
     EIGHT,
     NINE,
@@ -32,11 +32,11 @@ enum class CardValue {
      */
     override fun toString() =
         when(this) {
-            TWO -> "2"
-            THREE -> "3"
-            FOUR -> "4"
-            FIVE -> "5"
-            SIX -> "6"
+            //TWO -> "2"
+            //THREE -> "3"
+            //FOUR -> "4"
+            //FIVE -> "5"
+            //SIX -> "6"
             SEVEN -> "7"
             EIGHT -> "8"
             NINE -> "9"

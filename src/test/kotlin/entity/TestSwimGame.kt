@@ -16,10 +16,10 @@ class TestSwimGame {
     fun createSwimGame() {
         val passedCounter = 0
         val currentPlayer = 1
-        val cardsInMid = Array<Card>(3) { Card(CardValue.TWO, CardSuit.SPADES) }
+        val cardsInMid = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
         val mutableDeck = mutableListOf<Card>()
-        val cardsOnHand1 = Array<Card>(3) { Card(CardValue.TWO, CardSuit.SPADES) }
-        val cardsOnHand2 = Array<Card>(3) { Card(CardValue.TWO, CardSuit.SPADES) }
+        val cardsOnHand1 = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
+        val cardsOnHand2 = Array<Card>(3) { Card(CardValue.TEN, CardSuit.SPADES) }
 
         fillCards(cardsInMid, mutableDeck, cardsOnHand1, cardsOnHand2)
         val deck = mutableDeck.toList()

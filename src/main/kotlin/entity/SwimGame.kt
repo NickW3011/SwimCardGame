@@ -12,7 +12,7 @@ package entity
  */
 data class SwimGame(
     val passedCounter: Int = 0,
-    val currentPlayer: Int = 1,
+    val currentPlayer: Int = 0,
     val cardsInMid: Array<Card>,
     val deck: List<Card>,
     val players: Array<Player>

@@ -14,7 +14,7 @@ class TestPlayer {
     fun createPlayer() {
         val card1 = Card(CardValue.ACE, CardSuit.CLUBS)
         val card2 = Card(CardValue.JACK, CardSuit.SPADES)
-        val card3 = Card(CardValue.TWO, CardSuit.DIAMONDS)
+        val card3 = Card(CardValue.TEN, CardSuit.DIAMONDS)
 
         val name = "Nick"
         val closed = false
