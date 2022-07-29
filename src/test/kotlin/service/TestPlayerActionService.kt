@@ -1,6 +1,7 @@
 package service
 
 import entity.*
+import view.Refreshable
 import kotlin.test.*
 
 /**
@@ -11,8 +12,9 @@ class TestPlayerActionService {
     /**
      * Helping function for creating a test [SwimGame] and test [RootService]
      */
-    private fun createTestRootService(): RootService {
+    private fun createTestRootService(vararg refreshables: Refreshable): RootService {
         val rootService = RootService()
+        rootService.addRefreshables(*refreshables)
         val gameCards = mutableListOf<Card>()
         fillCardList(gameCards)
 
@@ -64,7 +66,8 @@ class TestPlayerActionService {
      */
     @Test
     fun testSwitchOne() {
-        val testRootService = createTestRootService()
+        val testRefreshable = TestRefreshable()
+        val testRootService = createTestRootService(testRefreshable)
         val currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
         val testCardOnHand = currentTestGame.players[currentTestGame.currentPlayer].cardsOnHand[1]
@@ -75,6 +78,8 @@ class TestPlayerActionService {
         val newCurrentTestGame = requireNotNull(testRootService.currentGame)
         assertEquals(newCurrentTestGame.cardsInMid[1], testCardOnHand)
         assertEquals(newCurrentTestGame.players[newCurrentTestGame.currentPlayer - 1].cardsOnHand[1], tesCardInMid)
+        assertTrue(testRefreshable.refreshAfterSwitchOneCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
     }
 
     /**
@@ -83,7 +88,8 @@ class TestPlayerActionService {
      */
     @Test
     fun testSwitchAll() {
-        val testRootService = createTestRootService()
+        val testRefreshable = TestRefreshable()
+        val testRootService = createTestRootService(testRefreshable)
         val currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
         val cardsOnHand = testPlayer.cardsOnHand
@@ -94,6 +100,9 @@ class TestPlayerActionService {
         val newCurrentTestGame = requireNotNull(testRootService.currentGame)
         assertEquals(newCurrentTestGame.cardsInMid, cardsOnHand)
         assertEquals(newCurrentTestGame.players[newCurrentTestGame.currentPlayer - 1].cardsOnHand, cardsInMid)
+        assertTrue(testRefreshable.refreshAfterSwitchAllCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
+        assertTrue(testRefreshable.refreshAfterTableDeckChangeCalled)
     }
 
     /**
@@ -103,7 +112,8 @@ class TestPlayerActionService {
      */
     @Test
     fun testPass() {
-        val testRootService = createTestRootService()
+        val testRefreshable = TestRefreshable()
+        val testRootService = createTestRootService(testRefreshable)
         var currentTestGame = requireNotNull(testRootService.currentGame)
         val cardsInMid = currentTestGame.cardsInMid
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
@@ -113,6 +123,10 @@ class TestPlayerActionService {
         val currentTestGameAfterFirstPass = requireNotNull(testRootService.currentGame)
         assertEquals(cardsInMid, currentTestGameAfterFirstPass.cardsInMid)
         assertEquals(currentTestGameAfterFirstPass.passedCounter, 1)
+        assertTrue(testRefreshable.refreshAfterPassCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
+
+        testRefreshable.reset()
 
         testRootService.playerActionService.pass(
             currentTestGameAfterFirstPass.players[
@@ -123,14 +137,20 @@ class TestPlayerActionService {
         val currentTestGameAfterSecondPass = requireNotNull(testRootService.currentGame)
         assertNotEquals(cardsInMid, currentTestGameAfterSecondPass.cardsInMid)
         assertEquals(currentTestGameAfterSecondPass.passedCounter, 0)
+        assertTrue(testRefreshable.refreshAfterPassCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
 
-        repeat(12) {
+        repeat(10) {
+            testRefreshable.reset()
             currentTestGame = requireNotNull(testRootService.currentGame)
             testRootService.playerActionService.pass(currentTestGame.players[currentTestGame.currentPlayer])
         }
 
         currentTestGame = requireNotNull(testRootService.currentGame)
+
         assert(currentTestGame.deck.size < 3)
+        assertTrue(testRefreshable.refreshAfterGameEndCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
     }
 
     /**
@@ -139,7 +159,8 @@ class TestPlayerActionService {
      */
     @Test
     fun testClose() {
-        val testRootService = createTestRootService()
+        val testRefreshable = TestRefreshable()
+        val testRootService = createTestRootService(testRefreshable)
         var currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
 
@@ -147,5 +168,7 @@ class TestPlayerActionService {
 
         currentTestGame = requireNotNull(testRootService.currentGame)
         assertNotEquals(currentTestGame.players[currentTestGame.currentPlayer - 1].closed, testPlayer.closed)
+        assertTrue(testRefreshable.refreshAfterCloseCalled)
+        assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
     }
 }

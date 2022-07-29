@@ -41,6 +41,7 @@ class PlayerActionService(
         } else {
             rootService.currentGame = currentGame.copy(currentPlayer = currentGame.currentPlayer + 1)
         }
+        onAllRefreshables { refreshAfterPlayerSwitch() }
     }
 
 
@@ -99,6 +100,7 @@ class PlayerActionService(
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterSwitchAll() }
+        onAllRefreshables { refreshAfterTableDeckChange() }
         endMove(newPlayer)
     }
 

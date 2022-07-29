@@ -39,7 +39,7 @@ class GameService(
 
         rootService.currentGame = SwimGame(passedCounter, currentPlayer, cardsInMid, deck, swimPlayers)
 
-        //refreshAfterStartNewGame()
+        onAllRefreshables { refreshAfterStartNewGame() }
     }
 
     /**

@@ -30,7 +30,7 @@ class RootService {
      *
      * @param newRefreshable [Refreshable] to add to both services
      */
-    fun addRefreshable(newRefreshable: Refreshable) {
+    private fun addRefreshable(newRefreshable: Refreshable) {
         gameService.addRefreshable(newRefreshable)
         playerActionService.addRefreshable(newRefreshable)
     }

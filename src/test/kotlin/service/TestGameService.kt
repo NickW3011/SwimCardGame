@@ -14,7 +14,9 @@ class TestGameService {
      */
     @Test
     fun testStartNewGame() {
+        val testRefreshable = TestRefreshable()
         val testRootService = RootService()
+        testRootService.addRefreshables(testRefreshable)
         val testPlayerCount = 2
         val testPlayers = arrayOf("testPlayer1", "testPlayer2")
 
@@ -31,6 +33,7 @@ class TestGameService {
         assertNotEquals(currentTestGame.cardsInMid, currentTestGame.players[0].cardsOnHand)
         assertNotEquals(currentTestGame.cardsInMid, currentTestGame.players[1].cardsOnHand)
         assertNotEquals(currentTestGame.players[0].cardsOnHand, currentTestGame.players[1].cardsOnHand)
+        assertTrue(testRefreshable.refreshAfterStartNewGameCalled)
     }
 
     /**
