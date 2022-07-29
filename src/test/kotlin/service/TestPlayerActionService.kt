@@ -2,6 +2,7 @@ package service
 
 import entity.*
 import view.Refreshable
+import java.lang.IllegalArgumentException
 import kotlin.test.*
 
 /**
@@ -70,8 +71,19 @@ class TestPlayerActionService {
         val testRootService = createTestRootService(testRefreshable)
         val currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
+        val notActivePlayer = currentTestGame.players[currentTestGame.currentPlayer + 1]
         val testCardOnHand = currentTestGame.players[currentTestGame.currentPlayer].cardsOnHand[1]
         val tesCardInMid = currentTestGame.cardsInMid[1]
+
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.switchOne(notActivePlayer, testCardOnHand, tesCardInMid)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.switchOne(testPlayer, tesCardInMid, testCardOnHand)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.switchOne(notActivePlayer, testCardOnHand, testCardOnHand)
+        }
 
         testRootService.playerActionService.switchOne(testPlayer, testCardOnHand, tesCardInMid)
 
@@ -80,6 +92,11 @@ class TestPlayerActionService {
         assertEquals(newCurrentTestGame.players[newCurrentTestGame.currentPlayer - 1].cardsOnHand[1], tesCardInMid)
         assertTrue(testRefreshable.refreshAfterSwitchOneCalled)
         assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
+
+        val testRootServiceWithNullGame = RootService()
+        assertFailsWith<IllegalArgumentException> {
+            testRootServiceWithNullGame.playerActionService.switchOne(testPlayer, testCardOnHand, tesCardInMid)
+        }
     }
 
     /**
@@ -92,8 +109,13 @@ class TestPlayerActionService {
         val testRootService = createTestRootService(testRefreshable)
         val currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
+        val notActivePlayer = currentTestGame.players[currentTestGame.currentPlayer + 1]
         val cardsOnHand = testPlayer.cardsOnHand
         val cardsInMid = currentTestGame.cardsInMid
+
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.switchAll(notActivePlayer)
+        }
 
         testRootService.playerActionService.switchAll(testPlayer)
 
@@ -103,6 +125,11 @@ class TestPlayerActionService {
         assertTrue(testRefreshable.refreshAfterSwitchAllCalled)
         assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
         assertTrue(testRefreshable.refreshAfterTableDeckChangeCalled)
+
+        val testRootServiceWithNullGame = RootService()
+        assertFailsWith<IllegalArgumentException> {
+            testRootServiceWithNullGame.playerActionService.switchAll(testPlayer)
+        }
     }
 
     /**
@@ -117,6 +144,11 @@ class TestPlayerActionService {
         var currentTestGame = requireNotNull(testRootService.currentGame)
         val cardsInMid = currentTestGame.cardsInMid
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
+        val notActivePlayer = currentTestGame.players[currentTestGame.currentPlayer + 1]
+
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.pass(notActivePlayer)
+        }
 
         testRootService.playerActionService.pass(testPlayer)
 
@@ -151,6 +183,11 @@ class TestPlayerActionService {
         assert(currentTestGame.deck.size < 3)
         assertTrue(testRefreshable.refreshAfterGameEndCalled)
         assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
+
+        val testRootServiceWithNullGame = RootService()
+        assertFailsWith<IllegalArgumentException> {
+            testRootServiceWithNullGame.playerActionService.pass(testPlayer)
+        }
     }
 
     /**
@@ -163,6 +200,11 @@ class TestPlayerActionService {
         val testRootService = createTestRootService(testRefreshable)
         var currentTestGame = requireNotNull(testRootService.currentGame)
         val testPlayer = currentTestGame.players[currentTestGame.currentPlayer]
+        val notActivePlayer = currentTestGame.players[currentTestGame.currentPlayer + 1]
+
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.playerActionService.close(notActivePlayer)
+        }
 
         testRootService.playerActionService.close(testPlayer)
 
@@ -170,5 +212,10 @@ class TestPlayerActionService {
         assertNotEquals(currentTestGame.players[currentTestGame.currentPlayer - 1].closed, testPlayer.closed)
         assertTrue(testRefreshable.refreshAfterCloseCalled)
         assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
+
+        val testRootServiceWithNullGame = RootService()
+        assertFailsWith<IllegalArgumentException> {
+            testRootServiceWithNullGame.playerActionService.close(testPlayer)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package service
 
 import entity.*
+import java.lang.IllegalArgumentException
 import kotlin.test.*
 
 /**
@@ -19,6 +20,11 @@ class TestGameService {
         testRootService.addRefreshables(testRefreshable)
         val testPlayerCount = 2
         val testPlayers = arrayOf("testPlayer1", "testPlayer2")
+        val testPlayersSameName = arrayOf("testPlayer1", "testPlayer1")
+
+        assertFailsWith<IllegalArgumentException> {
+            testRootService.gameService.startNewGame(testPlayerCount, testPlayersSameName)
+        }
 
         testRootService.gameService.startNewGame(testPlayerCount, testPlayers)
 
@@ -77,113 +83,132 @@ class TestGameService {
      */
     @Test
     fun testIsGameOver() {
-        // First Case
+        firstCase()
+        secondCase()
+        thirdCase()
+    }
+
+    /**
+     * Function for first case
+     */
+    private fun firstCase() {
         val testRootService1 = RootService()
 
-        var testCardsOnHand1 = arrayOf(
+        val testCardsOnHand1 = arrayOf(
             Card(CardValue.TEN, CardSuit.CLUBS),
             Card(CardValue.TEN, CardSuit.HEARTS),
             Card(CardValue.TEN, CardSuit.DIAMONDS)
         )
-        var testPlayer1 = Player("testPlayer1", false, testCardsOnHand1)
+        val testPlayer1 = Player("testPlayer1", false, testCardsOnHand1)
 
-        var testCardsOnHand2 = arrayOf(
+        val testCardsOnHand2 = arrayOf(
             Card(CardValue.ACE, CardSuit.CLUBS),
             Card(CardValue.EIGHT, CardSuit.CLUBS),
             Card(CardValue.QUEEN, CardSuit.DIAMONDS)
         )
-        var testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
+        val testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
 
-        var testPlayers = arrayOf(testPlayer1, testPlayer2)
+        val testPlayers = arrayOf(testPlayer1, testPlayer2)
 
-        var testCardsInMid = arrayOf(
+        val testCardsInMid = arrayOf(
             Card(CardValue.ACE, CardSuit.HEARTS),
             Card(CardValue.ACE, CardSuit.DIAMONDS),
             Card(CardValue.ACE, CardSuit.SPADES)
         )
 
-        var testDeck = mutableListOf(
+        val testDeck = mutableListOf(
             Card(CardValue.JACK, CardSuit.HEARTS),
             Card(CardValue.JACK, CardSuit.DIAMONDS)
         )
 
-        var testGameAllPassed = SwimGame(2, 0, testCardsInMid, testDeck, testPlayers)
+        val testGameAllPassed = SwimGame(2, 0, testCardsInMid, testDeck, testPlayers)
         testRootService1.currentGame = testGameAllPassed
 
         assert(testRootService1.gameService.isGameOver())
+    }
 
-        // Second Case
-
+    /**
+     * Function for second case
+     */
+    private fun secondCase() {
         val testRootService2 = RootService()
 
-        testCardsOnHand1 = arrayOf(
+        val testCardsOnHand1 = arrayOf(
             Card(CardValue.TEN, CardSuit.CLUBS),
             Card(CardValue.TEN, CardSuit.HEARTS),
             Card(CardValue.TEN, CardSuit.DIAMONDS)
         )
-        testPlayer1 = Player("testPlayer1", true, testCardsOnHand1)
+        val testPlayer1 = Player("testPlayer1", true, testCardsOnHand1)
 
-        testCardsOnHand2 = arrayOf(
+        val testCardsOnHand2 = arrayOf(
             Card(CardValue.ACE, CardSuit.CLUBS),
             Card(CardValue.EIGHT, CardSuit.CLUBS),
             Card(CardValue.QUEEN, CardSuit.DIAMONDS)
         )
-        testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
+        val testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
 
-        testPlayers = arrayOf(testPlayer1, testPlayer2)
+        val testPlayers = arrayOf(testPlayer1, testPlayer2)
 
-        testCardsInMid = arrayOf(
+        val testCardsInMid = arrayOf(
             Card(CardValue.ACE, CardSuit.HEARTS),
             Card(CardValue.ACE, CardSuit.DIAMONDS),
             Card(CardValue.ACE, CardSuit.SPADES)
         )
 
-        testDeck = mutableListOf(
+        val testDeck = mutableListOf(
             Card(CardValue.JACK, CardSuit.HEARTS),
             Card(CardValue.JACK, CardSuit.DIAMONDS)
         )
 
-        testGameAllPassed = SwimGame(0, 0, testCardsInMid, testDeck, testPlayers)
+        val testGameAllPassed = SwimGame(0, 0, testCardsInMid, testDeck, testPlayers)
         testRootService2.currentGame = testGameAllPassed
 
         assert(testRootService2.gameService.isGameOver())
+    }
 
-        // Third Case
-
+    /**
+     * Function for third case
+     */
+    private fun thirdCase() {
         val testRootService3 = RootService()
 
-        testCardsOnHand1 = arrayOf(
+        val testCardsOnHand1 = arrayOf(
             Card(CardValue.TEN, CardSuit.CLUBS),
             Card(CardValue.TEN, CardSuit.HEARTS),
             Card(CardValue.TEN, CardSuit.DIAMONDS)
         )
-        testPlayer1 = Player("testPlayer1", false, testCardsOnHand1)
+        val testPlayer1 = Player("testPlayer1", false, testCardsOnHand1)
 
-        testCardsOnHand2 = arrayOf(
+        val testCardsOnHand2 = arrayOf(
             Card(CardValue.ACE, CardSuit.CLUBS),
             Card(CardValue.EIGHT, CardSuit.CLUBS),
             Card(CardValue.QUEEN, CardSuit.DIAMONDS)
         )
-        testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
+        val testPlayer2 = Player("testPlayer2", false, testCardsOnHand2)
 
-        testPlayers = arrayOf(testPlayer1, testPlayer2)
+        val testPlayers = arrayOf(testPlayer1, testPlayer2)
 
-        testCardsInMid = arrayOf(
+        val testCardsInMid = arrayOf(
             Card(CardValue.ACE, CardSuit.HEARTS),
             Card(CardValue.ACE, CardSuit.DIAMONDS),
             Card(CardValue.ACE, CardSuit.SPADES)
         )
 
-        testDeck = mutableListOf(
+        val testDeck = mutableListOf(
             Card(CardValue.JACK, CardSuit.HEARTS),
             Card(CardValue.JACK, CardSuit.DIAMONDS),
             Card(CardValue.JACK, CardSuit.SPADES),
             Card(CardValue.JACK, CardSuit.CLUBS)
         )
 
-        testGameAllPassed = SwimGame(0, 0, testCardsInMid, testDeck, testPlayers)
+        val testGameAllPassed = SwimGame(0, 0, testCardsInMid, testDeck, testPlayers)
         testRootService3.currentGame = testGameAllPassed
 
         assert(!testRootService3.gameService.isGameOver())
+
+        val testRootServiceWithNullGame = RootService()
+        assertFailsWith<IllegalArgumentException> {
+            testRootServiceWithNullGame.gameService.isGameOver()
+        }
     }
 }

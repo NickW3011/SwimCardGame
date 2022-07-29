@@ -30,11 +30,8 @@ class PlayerActionService(
     /**
      * This is a private helping function to end a players move. It increases the currentPlayer or sets it to 1 depending
      * on the current value of currentPlayer
-     *
-     * @param player [Player] to end the move
      */
-    private fun endMove(player: Player) {
-        require(isPlayerActive(player))
+    private fun endMove() {
         val currentGame = requireNotNull(rootService.currentGame)
         if (currentGame.currentPlayer == currentGame.players.size - 1) {
             rootService.currentGame = currentGame.copy(currentPlayer = 0)
@@ -76,7 +73,7 @@ class PlayerActionService(
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterSwitchOne(playerCard, tableCard) }
-        endMove(player)
+        endMove()
     }
 
     /**
@@ -101,7 +98,7 @@ class PlayerActionService(
 
         onAllRefreshables { refreshAfterSwitchAll() }
         onAllRefreshables { refreshAfterTableDeckChange() }
-        endMove(newPlayer)
+        endMove()
     }
 
     /**
@@ -120,7 +117,7 @@ class PlayerActionService(
         if (newPassedCounter == currentGame.players.size) {
             if (currentGame.deck.size < 3) {
                 rootService.currentGame = currentGame.copy(passedCounter = newPassedCounter)
-                endMove(player)
+                endMove()
                 onAllRefreshables { refreshAfterGameEnd() }
                 return
             }
@@ -139,7 +136,7 @@ class PlayerActionService(
         rootService.currentGame = requireNotNull(rootService.currentGame).copy(passedCounter = newPassedCounter)
 
         onAllRefreshables { refreshAfterPass() }
-        endMove(player)
+        endMove()
     }
 
     /**
@@ -160,6 +157,6 @@ class PlayerActionService(
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterClose() }
-        endMove(newPlayer)
+        endMove()
     }
 }
