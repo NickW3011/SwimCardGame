@@ -27,12 +27,12 @@ class GameService(
      * @param players [Array] with names of players
      */
     fun startNewGame(playerCount: Int, players: Array<String>) {
-        require(players.distinct() == players)
+        require(players.distinct().toTypedArray().contentEquals(players))
         val availableCards = mutableListOf<Card>()
         fillCardList(availableCards)
 
         val passedCounter = 0
-        val currentPlayer = 1
+        val currentPlayer = 0
         val cardsInMid = getRandomThreeCards(availableCards)
         val swimPlayers = createPlayers(playerCount, availableCards, players)
         val deck = randomizeCards(availableCards).toList()
@@ -88,7 +88,7 @@ class GameService(
         names: Array<String>
     ): Array<Player> {
         val players = arrayOfNulls<Player>(playerCount)
-        for (i in 0..playerCount) {
+        for (i in 0 until playerCount) {
             val cardsOnHand = getRandomThreeCards(availableCards)
             val player = Player(names[i], false, cardsOnHand)
             players[i] = player
@@ -104,8 +104,11 @@ class GameService(
      */
     private fun randomizeCards(availableCards: MutableList<Card>): MutableList<Card> {
         val randomizedCards = mutableListOf<Card>()
-        for (i in 0 until availableCards.size - 1) {
-            val randomInt = Random.nextInt(0, availableCards.size - 1)
+        for (i in 0 until availableCards.size) {
+            var randomInt = 0
+            if (availableCards.size - 1 != 0) {
+                randomInt = Random.nextInt(0, availableCards.size - 1)
+            }
             randomizedCards.add(availableCards[randomInt])
             availableCards.removeAt(randomInt)
         }
@@ -177,7 +180,11 @@ class GameService(
      * @return [Boolean] weather the current [SwimGame] is over
      */
     fun isGameOver(): Boolean {
-        return requireNotNull(rootService.currentGame).passedCounter == requireNotNull(rootService.currentGame).players.size
-                || requireNotNull(rootService.currentGame).players[requireNotNull(rootService.currentGame).currentPlayer].closed
+        return (requireNotNull(rootService.currentGame).passedCounter ==
+                requireNotNull(rootService.currentGame).players.size &&
+                requireNotNull(rootService.currentGame).deck.size < 3) ||
+                requireNotNull(rootService.currentGame).players[
+                        requireNotNull(rootService.currentGame).currentPlayer
+                ].closed
     }
 }

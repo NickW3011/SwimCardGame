@@ -114,13 +114,17 @@ class TestPlayerActionService {
         assertEquals(cardsInMid, currentTestGameAfterFirstPass.cardsInMid)
         assertEquals(currentTestGameAfterFirstPass.passedCounter, 1)
 
-        testRootService.playerActionService.pass(currentTestGameAfterFirstPass.players[currentTestGameAfterFirstPass.currentPlayer])
+        testRootService.playerActionService.pass(
+            currentTestGameAfterFirstPass.players[
+                    currentTestGameAfterFirstPass.currentPlayer
+            ]
+        )
 
         val currentTestGameAfterSecondPass = requireNotNull(testRootService.currentGame)
         assertNotEquals(cardsInMid, currentTestGameAfterSecondPass.cardsInMid)
         assertEquals(currentTestGameAfterSecondPass.passedCounter, 0)
 
-        for (i in 1..12) {
+        repeat(12) {
             currentTestGame = requireNotNull(testRootService.currentGame)
             testRootService.playerActionService.pass(currentTestGame.players[currentTestGame.currentPlayer])
         }

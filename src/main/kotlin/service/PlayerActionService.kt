@@ -34,6 +34,7 @@ class PlayerActionService(
      * @param player [Player] to end the move
      */
     private fun endMove(player: Player) {
+        require(isPlayerActive(player))
         val currentGame = requireNotNull(rootService.currentGame)
         if (currentGame.currentPlayer == currentGame.players.size - 1) {
             rootService.currentGame = currentGame.copy(currentPlayer = 0)
