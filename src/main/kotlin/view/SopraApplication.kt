@@ -2,11 +2,17 @@ package view
 
 import tools.aqua.bgw.core.BoardGameApplication
 
+/**
+ * Implementation of the BGW [BoardGameApplication] for the card game "Swim"
+ */
 class SopraApplication : BoardGameApplication("SoPra Game") {
 
-   private val helloScene = HelloScene()
+    /**
+     * Example hello scene
+     */
+    private val helloScene = HelloScene()
 
-   init {
+    init {
         this.showGameScene(helloScene)
     }
 

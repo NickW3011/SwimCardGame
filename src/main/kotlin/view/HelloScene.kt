@@ -1,12 +1,19 @@
 package view
 
 import tools.aqua.bgw.components.uicomponents.Label
+import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 
+/**
+ * Example Hello scene
+ */
 class HelloScene : BoardGameScene(500, 500) {
 
+    /**
+     * Example hello label
+     */
     private val helloLabel = Label(
         width = 500,
         height = 500,
