@@ -99,7 +99,7 @@ class PlayerActionService(
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterSwitchAll() }
-        endMove(player)
+        endMove(newPlayer)
     }
 
     /**
@@ -158,6 +158,6 @@ class PlayerActionService(
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterClose() }
-        endMove(player)
+        endMove(newPlayer)
     }
 }
