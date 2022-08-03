@@ -157,7 +157,9 @@ class PlayerActionService(
         val newPlayers = currentGame.players
         newPlayers[newPlayers.indexOf(player)] = newPlayer
 
-        val newSwimGame = currentGame.copy(players = newPlayers)
+        val newPassedCounter = 0
+
+        val newSwimGame = currentGame.copy(players = newPlayers, passedCounter = newPassedCounter)
         rootService.currentGame = newSwimGame
 
         onAllRefreshables { refreshAfterClose() }

@@ -172,7 +172,7 @@ class TestPlayerActionService {
         assertTrue(testRefreshable.refreshAfterPassCalled)
         assertTrue(testRefreshable.refreshAfterPlayerSwitchCalled)
 
-        repeat(10) {
+        repeat(14) {
             testRefreshable.reset()
             currentTestGame = requireNotNull(testRootService.currentGame)
             testRootService.playerActionService.pass(currentTestGame.players[currentTestGame.currentPlayer])

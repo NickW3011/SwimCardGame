@@ -10,8 +10,8 @@ class SopraApplication : BoardGameApplication("SoPra Game"), Refreshable {
 
     private val rootService = RootService()
 
-    private val newGameScene = NewGameScene(rootService)
-    private val gameScene = GameScene(rootService)
+    private var newGameScene = NewGameScene(rootService)
+    private var gameScene = GameScene(rootService)
     private val scoreboardScene = ScoreboardScene(rootService)
 
     init {
@@ -25,10 +25,22 @@ class SopraApplication : BoardGameApplication("SoPra Game"), Refreshable {
         this.showGameScene(gameScene)
         this.showMenuScene(newGameScene, 100)
 
+        scoreboardScene.menuButton.apply {
+            onMouseClicked = {
+                gameScene = GameScene(rootService)
+                rootService.addRefreshables(
+                    newGameScene,
+                    gameScene
+                )
+                showMenuScene(newGameScene)
+            }
+        }
+
     }
 
     override fun refreshAfterStartNewGame() {
         this.hideMenuScene()
+        showGameScene(gameScene)
         gameScene.initCardPanes()
     }
 
