@@ -11,7 +11,7 @@ interface Refreshable {
     /**
      * Refreshing function after a new game was started
      */
-    fun refreshAfterStartNewGame()
+    fun refreshAfterStartNewGame() {}
 
     /**
      * Refreshing function after one [Card] was switched
@@ -19,35 +19,35 @@ interface Refreshable {
      * @param playerCard [Card] on [Player] hand to be switched
      * @param tableCard [Card] on table to be switched
      */
-    fun refreshAfterSwitchOne(playerCard: Card, tableCard: Card)
+    fun refreshAfterSwitchOne(playerCard: Card, tableCard: Card) {}
 
     /**
      * Refreshing function after all [Player] cards are switched
      */
-    fun refreshAfterSwitchAll()
+    fun refreshAfterSwitchAll() {}
 
     /**
      * Refreshing function after a [Player] decides to pass
      */
-    fun refreshAfterPass()
+    fun refreshAfterPass() {}
 
     /**
      * Refreshing function after the deck on the table changed
      */
-    fun refreshAfterTableDeckChange()
+    fun refreshAfterTableDeckChange() {}
 
     /**
      * Refreshing function after a [Player] decides to close
      */
-    fun refreshAfterClose()
+    fun refreshAfterClose() {}
 
     /**
      * Refreshing function after the current [Player] is switched
      */
-    fun refreshAfterPlayerSwitch()
+    fun refreshAfterPlayerSwitch() {}
 
     /**
      * Refreshing function after the Swim Game is over
      */
-    fun refreshAfterGameEnd()
+    fun refreshAfterGameEnd() {}
 }

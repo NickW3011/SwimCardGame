@@ -1,7 +1,6 @@
 package view
 
 import tools.aqua.bgw.components.uicomponents.Label
-import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
