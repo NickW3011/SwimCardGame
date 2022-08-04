@@ -8,6 +8,10 @@ import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import java.awt.Color
 
+/**
+ * This class represents the interface for starting an new game. The players are able to chose their names and the
+ * playerCount
+ */
 class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080), Refreshable {
 
     private var playerCount = 2

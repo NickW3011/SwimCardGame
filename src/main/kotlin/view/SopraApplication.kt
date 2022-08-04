@@ -38,12 +38,18 @@ class SopraApplication : BoardGameApplication("SoPra Game"), Refreshable {
 
     }
 
+    /**
+     * After a new game is started the current menu scene is hidden and the game scene is shown
+     */
     override fun refreshAfterStartNewGame() {
         this.hideMenuScene()
         showGameScene(gameScene)
         gameScene.initCardPanes()
     }
 
+    /**
+     * After the game is over the scoreboard is shown
+     */
     override fun refreshAfterGameEnd() {
         this.showMenuScene(scoreboardScene)
     }

@@ -12,6 +12,10 @@ import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 
+/**
+ * This class represents the current game scene. It holds the player cards, the cardsInMid, a score label and other game
+ * components
+ */
 class GameScene(private val rootService: RootService) : BoardGameScene(1920, 1080), Refreshable {
 
     private fun setCardIndex(card: CardView, index: Int, isMiddleCard: Boolean) {
@@ -290,6 +294,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         )
     }
 
+    /**
+     * This function creates the [CardView] objects and sets the player cards and middle cards
+     */
     fun initCardPanes() {
         val currentGame = requireNotNull(rootService.currentGame)
         when (currentGame.players.size) {
@@ -341,6 +348,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         }
     }
 
+    /**
+     * This function rotates the player cards clock wise
+     */
     override fun refreshAfterPlayerSwitch() {
         val currentGame = requireNotNull(rootService.currentGame)
         when (currentGame.players.size) {
@@ -417,6 +427,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         score.text = "?"
     }
 
+    /**
+     * This function switches one playerCard with one tableCard
+     */
     override fun refreshAfterSwitchOne(playerCard: Card, tableCard: Card) {
         val currentGame = requireNotNull(rootService.currentGame)
         val playerCardIndex = currentGame.players[currentGame.currentPlayer].cardsOnHand.indexOf(tableCard)
@@ -453,6 +466,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         switchOnePressed = false
     }
 
+    /**
+     * This function switches all player cards with all table cards
+     */
     override fun refreshAfterSwitchAll() {
         val currentGame = requireNotNull(rootService.currentGame)
         val newCardsOnHand = createCardViews(
@@ -462,6 +478,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         cardPaneBottom.addAll(newCardsOnHand)
     }
 
+    /**
+     * This function switches all table cards with new cards from the deck
+     */
     override fun refreshAfterTableDeckChange() {
         val currentGame = requireNotNull(rootService.currentGame)
         val newCardsInMid = createCardViews(currentGame.cardsInMid, false)
@@ -472,10 +491,16 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         cardPaneMiddle.addAll(newCardsInMid)
     }
 
+    /**
+     * This function increases the pass visuals in the pass button
+     */
     override fun refreshAfterPass() {
         //TODO: implement a visual pass counter and update
     }
 
+    /**
+     * This function changes the middleLabel after a player has closed the game
+     */
     override fun refreshAfterClose() {
         middleLabel.text = "It`s your last turn"
     }

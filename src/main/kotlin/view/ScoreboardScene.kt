@@ -10,7 +10,10 @@ import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 
-class ScoreboardScene(private val rootService: RootService): MenuScene(960, 720), Refreshable {
+/**
+ * This is a class to represent the scroeboard at the end of a game
+ */
+class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720), Refreshable {
     private val pane: Pane<UIComponent> = Pane(
         width = this.width - 160, height = this.height - 280,
         posX = (this.width / 2) - ((this.width - 160) / 2), posY = 80
@@ -94,16 +97,15 @@ class ScoreboardScene(private val rootService: RootService): MenuScene(960, 720)
         }
     }
 
-     val menuButton = Button(
+    /**
+     * This menu button brings a player back to the [NewGameScene]
+     */
+    val menuButton = Button(
         width = buttonWidth, height = 100, posX = playAgainButton.posX + playAgainButton.width + 50, posY = 0,
         text = "Menu",
         font = Font(size = buttonFontSize),
         visual = ColorVisual(204, 229, 255)
-    ).apply {
-        onMouseClicked = {
-
-        }
-    }
+    )
 
     private val buttonPane: Pane<Button> = Pane(
         width = 650, height = 100,
@@ -147,6 +149,9 @@ class ScoreboardScene(private val rootService: RootService): MenuScene(960, 720)
         )
     }
 
+    /**
+     * This function sets the labels on the scoreboard
+     */
     override fun refreshAfterGameEnd() {
         val currentGame = requireNotNull(rootService.currentGame)
         val players = currentGame.players.toMutableList()
@@ -155,7 +160,7 @@ class ScoreboardScene(private val rootService: RootService): MenuScene(960, 720)
         }
         players.reverse()
         for (i in 0 until players.size) {
-            playerNames[i].text = "#" + (i+1).toString() + " " + players[i].name
+            playerNames[i].text = "#" + (i + 1).toString() + " " + players[i].name
             playerScores[i].text = rootService.gameService.countPoints(players[i]).toString()
             playerNames[i].isVisible = true
             playerScores[i].isVisible = true
