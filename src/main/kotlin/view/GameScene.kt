@@ -3,7 +3,7 @@ package view
 import entity.Card
 import service.CardImageLoader
 import service.RootService
-import tools.aqua.bgw.animation.FlipAnimation
+import tools.aqua.bgw.animation.*
 import tools.aqua.bgw.components.gamecomponentviews.CardView
 import tools.aqua.bgw.components.layoutviews.Pane
 import tools.aqua.bgw.components.uicomponents.Button
@@ -21,6 +21,9 @@ import java.awt.Color
  */
 class GameScene(private val rootService: RootService) : BoardGameScene(1920, 1080), Refreshable {
 
+    private var highlightedHandCard: CardView? = null
+    private var highlightedTableCard: CardView? = null
+
     private fun setCardIndex(card: CardView, index: Int, isMiddleCard: Boolean) {
         card.apply {
             onMouseClicked = {
@@ -32,17 +35,53 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                             requireNotNull(chosenHandCard),
                             currentGame.cardsInMid[index]
                         )
+                        highlightedHandCard = null
+                        highlightedTableCard = null
                     } else if (chosenTableCard != null && !isMiddleCard) {
                         rootService.playerActionService.switchOne(
                             currentGame.players[currentGame.currentPlayer],
                             currentGame.players[currentGame.currentPlayer].cardsOnHand[index],
                             requireNotNull(chosenTableCard)
                         )
+                        highlightedHandCard = null
+                        highlightedTableCard = null
                     } else {
                         if (isMiddleCard) {
                             chosenTableCard = currentGame.cardsInMid[index]
+                            if (highlightedTableCard != null) {
+                                playAnimation(
+                                    MovementAnimation(
+                                        componentView = highlightedTableCard!!,
+                                        byX = 0, byY = 0, duration = 0
+                                    )
+                                )
+                                playAnimation(
+                                    MovementAnimation(componentView = this, byX = 0, byY = -25, duration = 200)
+                                )
+                            } else {
+                                playAnimation(
+                                    MovementAnimation(componentView = this, byX = 0, byY = -25, duration = 200)
+                                )
+                            }
+                            highlightedTableCard = this
                         } else {
                             chosenHandCard = currentGame.players[currentGame.currentPlayer].cardsOnHand[index]
+                            if (highlightedHandCard != null) {
+                                playAnimation(
+                                    MovementAnimation(
+                                        componentView = highlightedHandCard!!,
+                                        byX = 0, byY = 0, duration = 0
+                                    )
+                                )
+                                playAnimation(
+                                    MovementAnimation(componentView = this, byX = 0, byY = -25, duration = 200)
+                                )
+                            } else {
+                                playAnimation(
+                                    MovementAnimation(componentView = this, byX = 0, byY = -25, duration = 200)
+                                )
+                            }
+                            highlightedHandCard = this
                         }
                     }
                 }
@@ -480,10 +519,29 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         }
     }
 
+    private var nextPlayerSwitchDelayed = false
+
     /**
      * This function rotates the player cards clock wise
      */
     override fun refreshAfterPlayerSwitch() {
+        if (nextPlayerSwitchDelayed) {
+            lock()
+            playAnimation(
+                DelayAnimation(duration = 2000).apply {
+                    onFinished =
+                        {
+                            actualPlayerSwitch()
+                            unlock()
+                        }
+                }
+            )
+        } else {
+            actualPlayerSwitch()
+        }
+    }
+
+    private fun actualPlayerSwitch() {
         val currentGame = requireNotNull(rootService.currentGame)
         when (currentGame.players.size) {
             2 -> {
@@ -580,12 +638,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                          """.trimIndent()
             }
         }
+        nextPlayerSwitchDelayed = false
     }
 
     /**
      * This function switches one playerCard with one tableCard
      */
     override fun refreshAfterSwitchOne(playerCard: Card, tableCard: Card) {
+        nextPlayerSwitchDelayed = true
         val currentGame = requireNotNull(rootService.currentGame)
         val playerCardIndex = currentGame.players[currentGame.currentPlayer].cardsOnHand.indexOf(tableCard)
         val tableCardIndex = currentGame.cardsInMid.indexOf(playerCard)
@@ -629,11 +689,15 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
      * This function switches all player cards with all table cards
      */
     override fun refreshAfterSwitchAll() {
+        nextPlayerSwitchDelayed = true
         val currentGame = requireNotNull(rootService.currentGame)
         val newCardsOnHand = createCardViews(
             currentGame.players[currentGame.currentPlayer].cardsOnHand, true
         )
-        cardPaneBottom.removeAll(cardPaneMiddle.components)
+        newCardsOnHand.onEach {
+            it.showFront()
+        }
+        cardPaneBottom.clear()
         cardPaneBottom.addAll(newCardsOnHand)
     }
 
@@ -646,7 +710,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         newCardsInMid.onEach {
             it.showFront()
         }
-        cardPaneMiddle.removeAll(cardPaneMiddle.components)
+        cardPaneMiddle.clear()
         cardPaneMiddle.addAll(newCardsInMid)
     }
 
