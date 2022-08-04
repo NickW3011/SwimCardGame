@@ -299,41 +299,27 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 leftNameLabel.isVisible = false
                 rightNameLabel.isVisible = false
                 topNameLabel.text = currentGame.players[currentGame.currentPlayer + 1].name
-                cardPaneTop.apply {
-                    addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
-                }
+                cardPaneTop.addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
             }
             3 -> {
                 cardPaneTop.isVisible = false
                 topNameLabel.isVisible = false
                 leftNameLabel.text = currentGame.players[2].name
-                cardPaneLeft.apply {
-                    addAll(createCardViews(currentGame.players[2].cardsOnHand, true))
-                }
+                cardPaneLeft.addAll(createCardViews(currentGame.players[2].cardsOnHand, true))
                 rightNameLabel.text = currentGame.players[1].name
-                cardPaneRight.apply {
-                    addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
-                }
+                cardPaneRight.addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
             }
             4 -> {
                 leftNameLabel.text = currentGame.players[3].name
-                cardPaneLeft.apply {
-                    addAll(createCardViews(currentGame.players[3].cardsOnHand, true))
-                }
+                cardPaneLeft.addAll(createCardViews(currentGame.players[3].cardsOnHand, true))
                 rightNameLabel.text = currentGame.players[1].name
-                cardPaneRight.apply {
-                    addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
-                }
+                cardPaneRight.addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
                 topNameLabel.text = currentGame.players[2].name
-                cardPaneTop.apply {
-                    addAll(createCardViews(currentGame.players[2].cardsOnHand, true))
-                }
+                cardPaneTop.addAll(createCardViews(currentGame.players[2].cardsOnHand, true))
             }
         }
 
-        cardPaneBottom.apply {
-            addAll(createCardViews(currentGame.players[0].cardsOnHand, true))
-        }
+        cardPaneBottom.addAll(createCardViews(currentGame.players[0].cardsOnHand, true))
 
         val cardsInMid = currentGame.cardsInMid
         cardPaneMiddle.addAll(createCardViews(cardsInMid, false))
@@ -348,9 +334,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         cardPaneBottom.onEach {
             it.showFront()
         }
-        revealButton.apply {
-            isVisible = false
-        }
+        revealButton.isVisible = false
         score.apply {
             val currentGame = requireNotNull(rootService.currentGame)
             text = rootService.gameService.countPoints(currentGame.players[currentGame.currentPlayer]).toString()
@@ -363,21 +347,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
             2 -> {
                 val cardsBottom = cardPaneBottom.components
                 val cardsTop = cardPaneTop.components
-                topNameLabel.text = currentGame.players[(currentGame.currentPlayer + 1) % 2].name
-                cardPaneTop.apply {
-                    removeAll(cardsTop)
-                }
-                middleNameLabel.text = currentGame.players[currentGame.currentPlayer].name
-                cardPaneBottom.apply {
-                    removeAll(cardsBottom)
-                }
 
-                cardPaneTop.apply {
-                    addAll(cardsBottom)
-                }
-                cardPaneBottom.apply {
-                    addAll(cardsTop)
-                }
+                topNameLabel.text = currentGame.players[(currentGame.currentPlayer + 1) % 2].name
+                cardPaneTop.removeAll(cardsTop)
+                middleNameLabel.text = currentGame.players[currentGame.currentPlayer].name
+                cardPaneBottom.removeAll(cardsBottom)
+
+                cardPaneTop.addAll(cardsBottom)
+                cardPaneBottom.addAll(cardsTop)
 
                 cardPaneTop.components.onEach {
                     it.showBack()
@@ -388,27 +365,15 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 val cardsLeft = cardPaneLeft.components
                 val cardsRight = cardPaneRight.components
                 leftNameLabel.text = currentGame.players[(currentGame.currentPlayer + 2) % 3].name
-                cardPaneLeft.apply {
-                    removeAll(cardsLeft)
-                }
+                cardPaneLeft.removeAll(cardsLeft)
                 middleNameLabel.text = currentGame.players[currentGame.currentPlayer].name
-                cardPaneBottom.apply {
-                    removeAll(cardsBottom)
-                }
+                cardPaneBottom.removeAll(cardsBottom)
                 rightNameLabel.text = currentGame.players[(currentGame.currentPlayer + 1) % 3].name
-                cardPaneRight.apply {
-                    removeAll(cardsRight)
-                }
+                cardPaneRight.removeAll(cardsRight)
 
-                cardPaneLeft.apply {
-                    addAll(cardsBottom)
-                }
-                cardPaneBottom.apply {
-                    addAll(cardsRight)
-                }
-                cardPaneRight.apply {
-                    addAll(cardsLeft)
-                }
+                cardPaneLeft.addAll(cardsBottom)
+                cardPaneBottom.addAll(cardsRight)
+                cardPaneRight.addAll(cardsLeft)
 
                 cardPaneLeft.components.onEach {
                     it.showBack()
@@ -422,35 +387,20 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 val cardsBottom = cardPaneBottom.components
                 val cardsLeft = cardPaneLeft.components
                 val cardsRight = cardPaneRight.components
-                leftNameLabel.text = currentGame.players[(currentGame.currentPlayer + 3) % 4].name
-                cardPaneLeft.apply {
-                    removeAll(cardsLeft)
-                }
-                middleNameLabel.text = currentGame.players[currentGame.currentPlayer].name
-                cardPaneBottom.apply {
-                    removeAll(cardsBottom)
-                }
-                rightNameLabel.text = currentGame.players[(currentGame.currentPlayer + 1) % 4].name
-                cardPaneRight.apply {
-                    removeAll(cardsRight)
-                }
-                topNameLabel.text = currentGame.players[(currentGame.currentPlayer + 2) % 4].name
-                cardPaneTop.apply {
-                    removeAll(cardsTop)
-                }
 
-                cardPaneLeft.apply {
-                    addAll(cardsBottom)
-                }
-                cardPaneBottom.apply {
-                    addAll(cardsRight)
-                }
-                cardPaneRight.apply {
-                    addAll(cardsTop)
-                }
-                cardPaneTop.apply {
-                    addAll(cardsLeft)
-                }
+                leftNameLabel.text = currentGame.players[(currentGame.currentPlayer + 3) % 4].name
+                cardPaneLeft.removeAll(cardsLeft)
+                middleNameLabel.text = currentGame.players[currentGame.currentPlayer].name
+                cardPaneBottom.removeAll(cardsBottom)
+                rightNameLabel.text = currentGame.players[(currentGame.currentPlayer + 1) % 4].name
+                cardPaneRight.removeAll(cardsRight)
+                topNameLabel.text = currentGame.players[(currentGame.currentPlayer + 2) % 4].name
+                cardPaneTop.removeAll(cardsTop)
+
+                cardPaneLeft.addAll(cardsBottom)
+                cardPaneBottom.addAll(cardsRight)
+                cardPaneRight.addAll(cardsTop)
+                cardPaneTop.addAll(cardsLeft)
 
                 cardPaneTop.components.onEach {
                     it.showBack()
@@ -464,9 +414,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
             }
         }
         revealButton.isVisible = true
-        score.apply {
-            text = "?"
-        }
+        score.text = "?"
     }
 
     override fun refreshAfterSwitchOne(playerCard: Card, tableCard: Card) {
@@ -478,16 +426,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         val newBottomCard = newMiddleComponents[tableCardIndex]
         val newTableCard = newBottomComponents[playerCardIndex]
 
-        newBottomCard.apply {
-            rotation = -15.0 + (playerCardIndex * 15.0)
-            posY = 20.0 - (20 * (playerCardIndex % 2))
-            posX = (cardWidth + 30.0) * playerCardIndex
-        }
-        newTableCard.apply {
-            rotation = 0.0
-            posY = 0.0
-            posX = (cardWidth + 30.0) * tableCardIndex
-        }
+        newBottomCard.rotation = -15.0 + (playerCardIndex * 15.0)
+        newBottomCard.posY = 20.0 - (20 * (playerCardIndex % 2))
+        newBottomCard.posX = (cardWidth + 30.0) * playerCardIndex
+
+        newTableCard.rotation = 0.0
+        newTableCard.posY = 0.0
+        newTableCard.posX = (cardWidth + 30.0) * tableCardIndex
 
         setCardIndex(newBottomCard, playerCardIndex, false)
         setCardIndex(newTableCard, tableCardIndex, true)
@@ -496,18 +441,11 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         newBottomComponents.add(playerCardIndex, newBottomCard)
         newMiddleComponents.removeAt(tableCardIndex)
         newMiddleComponents.add(tableCardIndex, newTableCard)
-        cardPaneBottom.apply {
-            removeAll(cardPaneBottom.components)
-        }
-        cardPaneMiddle.apply {
-            removeAll(cardPaneMiddle.components)
-        }
-        cardPaneBottom.apply {
-            addAll(newBottomComponents)
-        }
-        cardPaneMiddle.apply {
-            addAll(newMiddleComponents)
-        }
+
+        cardPaneBottom.removeAll(cardPaneBottom.components)
+        cardPaneMiddle.removeAll(cardPaneMiddle.components)
+        cardPaneBottom.addAll(newBottomComponents)
+        cardPaneMiddle.addAll(newMiddleComponents)
 
         chosenHandCard = null
         chosenTableCard = null
@@ -520,10 +458,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         val newCardsOnHand = createCardViews(
             currentGame.players[currentGame.currentPlayer].cardsOnHand, true
         )
-        cardPaneBottom.apply {
-            removeAll(cardPaneMiddle.components)
-            addAll(newCardsOnHand)
-        }
+        cardPaneBottom.removeAll(cardPaneMiddle.components)
+        cardPaneBottom.addAll(newCardsOnHand)
     }
 
     override fun refreshAfterTableDeckChange() {
@@ -532,10 +468,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         newCardsInMid.onEach {
             it.showFront()
         }
-        cardPaneMiddle.apply {
-            removeAll(cardPaneMiddle.components)
-            addAll(newCardsInMid)
-        }
+        cardPaneMiddle.removeAll(cardPaneMiddle.components)
+        cardPaneMiddle.addAll(newCardsInMid)
     }
 
     override fun refreshAfterPass() {

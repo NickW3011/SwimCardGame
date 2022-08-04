@@ -71,7 +71,8 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
     private val p1Input: TextField = TextField(
         posX = p1Label.posX + p1Label.width, posY = 200, width = 400, height = 50,
         text = "",
-        font = Font(size = 40)
+        font = Font(size = 40),
+        prompt = "Mike"
     ).apply {
         onKeyTyped = {
             newGameButton.isDisabled = this.text.isBlank() || p2Input.text.isBlank()
@@ -89,7 +90,8 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
     private val p2Input: TextField = TextField(
         posX = p2Label.posX + p2Label.width, posY = p1Input.posY + 125, width = 400, height = 50,
         text = "",
-        font = Font(size = 40)
+        font = Font(size = 40),
+        prompt = "Dustin"
     ).apply {
         onKeyTyped = {
             newGameButton.isDisabled = p1Input.text.isBlank() || this.text.isBlank()
@@ -107,7 +109,8 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
     private val p3Input: TextField = TextField(
         posX = p3Label.posX + p3Label.width, posY = p2Input.posY + 125, width = 400, height = 50,
         text = "",
-        font = Font(size = 40)
+        font = Font(size = 40),
+        prompt = "Lucas"
     ).apply {
         onKeyTyped = {
             newGameButton.isDisabled = p1Input.text.isBlank() || this.text.isBlank()
@@ -125,11 +128,20 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
     private val p4Input: TextField = TextField(
         posX = p4Label.posX + p4Label.width, posY = p3Input.posY + 125, width = 400, height = 50,
         text = "",
-        font = Font(size = 40)
+        font = Font(size = 40),
+        prompt = "Will"
     ).apply {
         onKeyTyped = {
             newGameButton.isDisabled = p1Input.text.isBlank() || this.text.isBlank()
         }
+    }
+
+    private val errorLabel = Label(
+        width = 450, height = 50, posX = (this.width / 2) - 225, posY = pane.posY + pane.height,
+        text = "Player names must be unique",
+        font = Font(size = 20, fontStyle = Font.FontStyle.ITALIC, color = Color.RED)
+    ).apply {
+        isVisible = false
     }
 
     private val buttonWidth = 300
@@ -167,10 +179,20 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
                     )
                 }
             }
-            rootService.gameService.startNewGame(
-                playerCount,
-                players.requireNoNulls()
-            )
+            val standardNames = arrayOf("Mike", "Dustin", "Lucas", "Will")
+            for (i in players.indices) {
+                if (players[i] == "") {
+                    players[i] = standardNames[i]
+                }
+            }
+            if (players.distinct().toTypedArray().contentEquals(players)) {
+                rootService.gameService.startNewGame(
+                    playerCount,
+                    players.requireNoNulls()
+                )
+            } else {
+                errorLabel.isVisible = true
+            }
         }
     }
 
@@ -198,6 +220,7 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
             visual = ColorVisual(255, 242, 204, 255)
         }
         addComponents(
+            errorLabel,
             newGameButton,
             pane
         )
