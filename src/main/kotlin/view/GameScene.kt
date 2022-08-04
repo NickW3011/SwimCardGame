@@ -3,6 +3,7 @@ package view
 import entity.Card
 import service.CardImageLoader
 import service.RootService
+import tools.aqua.bgw.animation.FlipAnimation
 import tools.aqua.bgw.components.gamecomponentviews.CardView
 import tools.aqua.bgw.components.layoutviews.Pane
 import tools.aqua.bgw.components.uicomponents.Button
@@ -12,6 +13,7 @@ import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
+import java.awt.Color
 
 /**
  * This class represents the current game scene. It holds the player cards, the cardsInMid, a score label and other game
@@ -129,7 +131,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
     }
 
     private val topNameLabel = Label(
-        width = 450, height = 50, posX = (this.width / 2) - 225, posY = 150,
+        width = 450, height = 50, posX = (this.width / 2) - 225, posY = 175,
         text = "",
         font = Font(size = 40)
     )
@@ -177,9 +179,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
     }
 
     private val revealButton = Button(
-        posX = cardPaneBottom.posX + (cardPaneBottom.width / 2) - 150,
+        posX = cardPaneBottom.posX + (cardPaneBottom.width / 2) - 160,
         posY = cardPaneBottom.posY + (cardPaneBottom.height / 2) - 20,
-        height = 75, width = 300,
+        height = 75, width = 320,
         text = "Reveal Cards",
         font = Font(size = 40),
         visual = Visual.EMPTY
@@ -190,7 +192,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         componentStyle = """
             -fx-border-color: #B85450;
             -fx-background-color: #f8cecc;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
                 """.trimIndent()
@@ -199,13 +201,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
     private val middleNameLabel = Label(
         width = 450, height = 50, posX = (this.width / 2) - 225, posY = (this.height / 2) + 25,
         text = "",
-        font = Font(size = 40)
+        font = Font(size = 40, color = Color.BLUE)
     )
 
     private val middleLabel = Label(
         width = 450, height = 50, posX = (this.width / 2) - 225, posY = middleNameLabel.posY + 50,
         text = "It`s your turn",
-        font = Font(size = 20, fontStyle = Font.FontStyle.ITALIC)
+        font = Font(size = 20, fontStyle = Font.FontStyle.ITALIC, color = Color.BLUE)
     )
 
     private val actionButtonWidth = 300
@@ -221,10 +223,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
     ).apply {
         onMouseClicked = {
             switchOnePressed = true
+            switchAllButton.isDisabled = true
+            passButton.isDisabled = true
+            closeButton.isDisabled = true
         }
         componentStyle = """
             -fx-border-color: #D6B656;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
             -fx-background-color: #FFF2CC;
@@ -232,7 +237,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 """.trimIndent()
     }
 
-    private val switchAllButton = Button(
+    private val switchAllButton: Button = Button(
         width = actionButtonWidth, height = 100, posX = switchOneButton.posX + switchOneButton.width + 50, posY = 0,
         text = "Switch All Cards",
         font = Font(size = actionButtonFontSize),
@@ -244,7 +249,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         }
         componentStyle = """
             -fx-border-color: #D79B00;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
             -fx-background-color: #FFE6CC;
@@ -264,17 +269,79 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         }
         componentStyle = """
             -fx-border-color: #666666;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
             -fx-background-color: #F5F5F5;
                 """.trimIndent()
     }
 
-    /*private val passRoundButton1 = Button(
-        width = 20, height = 20, posX = switchAllButton.posX + switchAllButton.width + 60, posY = 80,
-        visual = ColorVisual(255, 242, 204)
-    )*/
+    private val passRoundButtonWidth = 30
+    private val passRoundButtonHeight = 20
+
+    /*private val passRoundButtonActiveBackground = "f2de83"
+    private val passRoundButtonActiveBorder = "a38c45"
+
+    private val passRoundButtonPassiveBackground = "F5F5F5"
+    private val passRoundButtonPassiveBorder = "666666"*/
+
+    private val passRoundButton1 = Button(
+        width = passRoundButtonWidth, height = passRoundButtonHeight,
+        posX = switchAllButton.posX + switchAllButton.width + 60, posY = 60,
+        visual = Visual.EMPTY
+    ).apply {
+        componentStyle = """
+            -fx-border-color: #666666;
+            -fx-border-width: 2px;
+            -fx-border-radius: 50%;
+            -fx-background-radius: 50%;
+            -fx-background-color: #F5F5F5;
+                """.trimIndent()
+    }
+
+    private val passRoundButton2 = Button(
+        width = passRoundButtonWidth, height = passRoundButtonHeight,
+        posX = passRoundButton1.posX + passRoundButton1.width + 5, posY = 60,
+        visual = Visual.EMPTY
+    ).apply {
+        componentStyle = """
+            -fx-border-color: #666666;
+            -fx-border-width: 2px;
+            -fx-border-radius: 50%;
+            -fx-background-radius: 50%;
+            -fx-background-color: #F5F5F5;
+                """.trimIndent()
+    }
+
+    private val passRoundButton3 = Button(
+        width = passRoundButtonWidth, height = passRoundButtonHeight,
+        posX = passRoundButton2.posX + passRoundButton2.width + 5, posY = 60,
+        visual = Visual.EMPTY
+    ).apply {
+        componentStyle = """
+            -fx-border-color: #666666;
+            -fx-border-width: 2px;
+            -fx-border-radius: 50%;
+            -fx-background-radius: 50%;
+            -fx-background-color: #F5F5F5;
+                """.trimIndent()
+    }
+
+    private val passRoundButton4 = Button(
+        width = passRoundButtonWidth, height = passRoundButtonHeight,
+        posX = passRoundButton3.posX + passRoundButton3.width + 5, posY = 60,
+        visual = Visual.EMPTY
+    ).apply {
+        componentStyle = """
+            -fx-border-color: #666666;
+            -fx-border-width: 2px;
+            -fx-border-radius: 50%;
+            -fx-background-radius: 50%;
+            -fx-background-color: #F5F5F5;
+                """.trimIndent()
+    }
+
+    private val passRoundButtons = arrayOf(passRoundButton1, passRoundButton2, passRoundButton3, passRoundButton4)
 
     private val closeButton = Button(
         width = actionButtonWidth, height = 100, posX = passButton.posX + passButton.width + 50, posY = 0,
@@ -289,7 +356,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         componentStyle = """
             -fx-border-color: #B85450;
             -fx-background-color: #F8CECC;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
                 """.trimIndent()
@@ -299,7 +366,18 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         width = 1250, height = 100,
         posX = (this.width / 2) - 675, posY = cardPaneBottom.posY + 275,
     ).apply {
-        addAll(listOf(switchOneButton, switchAllButton, passButton, closeButton/*, passRoundButton1*/))
+        addAll(
+            listOf(
+                switchOneButton,
+                switchAllButton,
+                passButton,
+                closeButton,
+                passRoundButton1,
+                passRoundButton2,
+                passRoundButton3,
+                passRoundButton4
+            )
+        )
     }
 
     private val scoreLabel = Label(
@@ -317,7 +395,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
 
     init {
         opacity = 1.0
-        background = ColorVisual(213, 232, 212, 255)
+        background = ColorVisual(1, 155, 33)
         addComponents(
             cardPaneBottom,
             cardPaneTop,
@@ -350,6 +428,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 rightNameLabel.isVisible = false
                 topNameLabel.text = currentGame.players[currentGame.currentPlayer + 1].name
                 cardPaneTop.addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
+                passRoundButton3.isVisible = false
+                passRoundButton4.isVisible = false
             }
             3 -> {
                 cardPaneTop.isVisible = false
@@ -358,6 +438,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
                 cardPaneLeft.addAll(createCardViews(currentGame.players[2].cardsOnHand, true))
                 rightNameLabel.text = currentGame.players[1].name
                 cardPaneRight.addAll(createCardViews(currentGame.players[1].cardsOnHand, true))
+                passRoundButton4.isVisible = false
             }
             4 -> {
                 leftNameLabel.text = currentGame.players[3].name
@@ -382,6 +463,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
 
     private fun revealCards() {
         cardPaneBottom.onEach {
+            playAnimation(
+                FlipAnimation(
+                    componentView = it,
+                    fromVisual = it.backVisual,
+                    toVisual = it.frontVisual,
+                    duration = 400
+                )
+            )
             it.showFront()
         }
         revealButton.isVisible = false
@@ -468,6 +557,29 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         }
         revealButton.isVisible = true
         score.text = "?"
+
+        val passedCounter = currentGame.passedCounter
+        for (i in 0 until currentGame.players.size) {
+            if ((i + 1) <= passedCounter) {
+                passRoundButtons[i]
+                    .componentStyle = """
+                        -fx-border-color: #a38c45;
+                        -fx-border-width: 2px;
+                        -fx-border-radius: 50%;
+                        -fx-background-radius: 50%;
+                        -fx-background-color: #f2de83;
+                         """.trimIndent()
+            } else {
+                passRoundButtons[i]
+                    .componentStyle = """
+                        -fx-border-color: #666666;
+                        -fx-border-width: 2px;
+                        -fx-border-radius: 50%;
+                        -fx-background-radius: 50%;
+                        -fx-background-color: #F5F5F5;
+                         """.trimIndent()
+            }
+        }
     }
 
     /**
@@ -503,6 +615,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         cardPaneBottom.addAll(newBottomComponents)
         cardPaneMiddle.addAll(newMiddleComponents)
 
+        switchAllButton.isDisabled = false
+        passButton.isDisabled = false
+        closeButton.isDisabled = false
+
         chosenHandCard = null
         chosenTableCard = null
 
@@ -534,12 +650,12 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         cardPaneMiddle.addAll(newCardsInMid)
     }
 
-    /**
+    /*/**
      * This function increases the pass visuals in the pass button
      */
     override fun refreshAfterPass() {
-        //TODO: implement a visual pass counter and update
-    }
+
+    }*/
 
     /**
      * This function changes the middleLabel after a player has closed the game

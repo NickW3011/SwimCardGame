@@ -91,7 +91,7 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
         componentStyle = """
             -fx-border-color: #8a9e5d;
             -fx-background-color: #cdeb8b;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
                 """.trimIndent()
@@ -117,7 +117,7 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
         componentStyle = """
             -fx-border-color: #8ea0b2;
             -fx-background-color: #cce5ff;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
                 """.trimIndent()
@@ -153,12 +153,11 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
                 playerScore4
             )
         }
-        buttonPane.apply {
-            addAll(
-                playAgainButton,
-                menuButton
-            )
-        }
+        buttonPane.addAll(
+            playAgainButton,
+            menuButton
+        )
+
         addComponents(
             pane,
             buttonPane

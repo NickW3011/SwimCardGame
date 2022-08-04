@@ -162,7 +162,7 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
         componentStyle = """
             -fx-border-color: #8a9e5d;
             -fx-background-color: #cdeb8b;
-            -fx-border-width: 1px;
+            -fx-border-width: 5px;
             -fx-border-radius: 20px;
             -fx-background-radius: 20px;
                 """.trimIndent()
