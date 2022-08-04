@@ -11,6 +11,7 @@ import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
+import tools.aqua.bgw.visual.Visual
 
 /**
  * This class represents the current game scene. It holds the player cards, the cardsInMid, a score label and other game
@@ -181,11 +182,18 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         height = 75, width = 300,
         text = "Reveal Cards",
         font = Font(size = 40),
-        visual = ColorVisual(248, 206, 204)
+        visual = Visual.EMPTY
     ).apply {
         onMouseClicked = {
             revealCards()
         }
+        componentStyle = """
+            -fx-border-color: #B85450;
+            -fx-background-color: #f8cecc;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+                """.trimIndent()
     }
 
     private val middleNameLabel = Label(
@@ -209,54 +217,89 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1920, 108
         width = actionButtonWidth, height = 100, posX = 0, posY = 0,
         text = "Switch One Card",
         font = Font(size = actionButtonFontSize),
-        visual = ColorVisual(255, 242, 204)
+        visual = Visual.EMPTY
     ).apply {
         onMouseClicked = {
             switchOnePressed = true
         }
+        componentStyle = """
+            -fx-border-color: #D6B656;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+            -fx-background-color: #FFF2CC;
+            -fx-text-alignment: CENTER;
+                """.trimIndent()
     }
 
     private val switchAllButton = Button(
         width = actionButtonWidth, height = 100, posX = switchOneButton.posX + switchOneButton.width + 50, posY = 0,
         text = "Switch All Cards",
         font = Font(size = actionButtonFontSize),
-        visual = ColorVisual(255, 230, 204)
+        visual = Visual.EMPTY
     ).apply {
         onMouseClicked = {
             val currentGame = requireNotNull(rootService.currentGame)
             rootService.playerActionService.switchAll(currentGame.players[currentGame.currentPlayer])
         }
+        componentStyle = """
+            -fx-border-color: #D79B00;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+            -fx-background-color: #FFE6CC;
+            -fx-text-alignment: CENTER;
+                """.trimIndent()
     }
 
     private val passButton = Button(
         width = actionButtonWidth, height = 100, posX = switchAllButton.posX + switchAllButton.width + 50, posY = 0,
         text = "Pass",
         font = Font(size = actionButtonFontSize),
-        visual = ColorVisual(245, 245, 245)
+        visual = Visual.EMPTY
     ).apply {
         onMouseClicked = {
             val currentGame = requireNotNull(rootService.currentGame)
             rootService.playerActionService.pass(currentGame.players[currentGame.currentPlayer])
         }
+        componentStyle = """
+            -fx-border-color: #666666;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+            -fx-background-color: #F5F5F5;
+                """.trimIndent()
     }
+
+    /*private val passRoundButton1 = Button(
+        width = 20, height = 20, posX = switchAllButton.posX + switchAllButton.width + 60, posY = 80,
+        visual = ColorVisual(255, 242, 204)
+    )*/
 
     private val closeButton = Button(
         width = actionButtonWidth, height = 100, posX = passButton.posX + passButton.width + 50, posY = 0,
         text = "Close",
         font = Font(size = actionButtonFontSize),
-        visual = ColorVisual(248, 206, 204)
+        visual = Visual.EMPTY
     ).apply {
         onMouseClicked = {
             val currentGame = requireNotNull(rootService.currentGame)
             rootService.playerActionService.close(currentGame.players[currentGame.currentPlayer])
         }
+        componentStyle = """
+            -fx-border-color: #B85450;
+            -fx-background-color: #F8CECC;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+                """.trimIndent()
     }
 
     private val buttonPane: Pane<Button> = Pane<Button>(
         width = 1250, height = 100,
         posX = (this.width / 2) - 675, posY = cardPaneBottom.posY + 275,
     ).apply {
-        addAll(listOf(switchOneButton, switchAllButton, passButton, closeButton))
+        addAll(listOf(switchOneButton, switchAllButton, passButton, closeButton/*, passRoundButton1*/))
     }
 
     private val scoreLabel = Label(

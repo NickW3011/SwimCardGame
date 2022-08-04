@@ -9,6 +9,7 @@ import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
+import tools.aqua.bgw.visual.Visual
 
 /**
  * This is a class to represent the scroeboard at the end of a game
@@ -85,8 +86,15 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
         width = buttonWidth, height = 100, posX = 0, posY = 0,
         text = "Play Again",
         font = Font(size = buttonFontSize),
-        visual = ColorVisual(205, 235, 139)
+        visual = Visual.EMPTY
     ).apply {
+        componentStyle = """
+            -fx-border-color: #8a9e5d;
+            -fx-background-color: #cdeb8b;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+                """.trimIndent()
         onMouseClicked = {
             val currentGame = requireNotNull(rootService.currentGame)
             val playerNames = arrayOfNulls<String>(currentGame.players.size)
@@ -104,8 +112,16 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
         width = buttonWidth, height = 100, posX = playAgainButton.posX + playAgainButton.width + 50, posY = 0,
         text = "Menu",
         font = Font(size = buttonFontSize),
-        visual = ColorVisual(204, 229, 255)
-    )
+        visual = Visual.EMPTY
+    ).apply {
+        componentStyle = """
+            -fx-border-color: #8ea0b2;
+            -fx-background-color: #cce5ff;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+                """.trimIndent()
+    }
 
     private val buttonPane: Pane<Button> = Pane(
         width = 650, height = 100,

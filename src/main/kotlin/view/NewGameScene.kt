@@ -6,6 +6,7 @@ import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
+import tools.aqua.bgw.visual.Visual
 import java.awt.Color
 
 /**
@@ -157,7 +158,14 @@ class NewGameScene(private val rootService: RootService) : MenuScene(1920, 1080)
         text = "Start Game",
         font = Font(color = Color.BLACK, size = 40),
     ).apply {
-        visual = ColorVisual(205, 235, 139, 255)
+        visual = Visual.EMPTY
+        componentStyle = """
+            -fx-border-color: #8a9e5d;
+            -fx-background-color: #cdeb8b;
+            -fx-border-width: 1px;
+            -fx-border-radius: 20px;
+            -fx-background-radius: 20px;
+                """.trimIndent()
         onMouseClicked = {
             var players = arrayOfNulls<String>(playerCount)
             when (playerCount) {
