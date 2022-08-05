@@ -180,5 +180,9 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(960, 720
             playerNames[i].isVisible = true
             playerScores[i].isVisible = true
         }
+        for (i in players.size until 4) {
+            playerNames[i].isVisible = false
+            playerScores[i].isVisible = false
+        }
     }
 }
